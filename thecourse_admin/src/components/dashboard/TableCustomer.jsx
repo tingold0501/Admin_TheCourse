@@ -30,6 +30,8 @@ function TableCustomer() {
     const urlApi = 'http://127.0.0.1:8000/api/';
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [users,setUsers] = useState([]);
+    // const [idRole, setIdRole] = useState("");
 
     const addUser = () => {
         if (name == "") {
@@ -59,13 +61,26 @@ function TableCustomer() {
         else{
             axios({
                 method: 'post',
-                url: urlApi + 'checkLoginAdmin',
+                url: urlApi + 'addUser',
                 data: {
                     name: name,
-                    email: email
+                    email: email,
+                    idRole:8
                 }
             }).then((res)=>{
                 console.log(res.data);
+                if(res.data.check == true){
+                    toast.success('🦄' + res.data.msg, {
+                        position: "top-right",
+                        autoClose: 1000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                }
             })
         }
     }
@@ -92,7 +107,7 @@ function TableCustomer() {
             </Modal>
             <div className="bg-white shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
                 <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-bold leading-none text-gray-900">Latest Customers</h3>
+                    <h3 className="text-xl font-bold leading-none text-gray-900">Users Table</h3>
                     {/* <a href="#" className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg inline-flex items-center p-2">
                         View all
                     </a> */}
