@@ -79,7 +79,9 @@ function TableCustomer() {
                         draggable: true,
                         progress: undefined,
                         theme: "light",
-                    });
+                    }).then(()=>{
+                        window.location.reload('/');
+                    })
                 }
             })
         }
