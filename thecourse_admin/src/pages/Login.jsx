@@ -70,6 +70,10 @@ function Login() {
                         progress: undefined,
                         theme: "light",
                     });
+                    localStorage.setItem("token",res.data.token);
+                    setTimeout(()=>{
+                        window.location.replace('/');
+                    })
                 }
             })
 
