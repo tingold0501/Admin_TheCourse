@@ -73,7 +73,7 @@ function Login() {
                     localStorage.setItem("token",res.data.token);
                     setTimeout(()=>{
                         window.location.replace('/');
-                    })
+                    },2000);
                 }
             })
 

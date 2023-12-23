@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,7 +30,7 @@ function TableCustomer() {
     const urlApi = 'http://127.0.0.1:8000/api/';
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [users,setUsers] = useState([]);
+    const [users, setUsers] = useState([]);
     // const [idRole, setIdRole] = useState("");
 
     const addUser = () => {
@@ -46,7 +46,7 @@ function TableCustomer() {
                 theme: "light",
             });
         }
-        else if(email == ""){
+        else if (email == "") {
             toast.error('🦄 Email User Null!', {
                 position: "top-right",
                 autoClose: 1000,
@@ -58,18 +58,18 @@ function TableCustomer() {
                 theme: "light",
             });
         }
-        else{
+        else {
             axios({
                 method: 'post',
                 url: urlApi + 'addUser',
                 data: {
                     name: name,
                     email: email,
-                    idRole:8
+                    idRole: 8
                 }
-            }).then((res)=>{
+            }).then((res) => {
                 console.log(res.data);
-                if(res.data.check == true){
+                if (res.data.check == true) {
                     toast.success('🦄' + res.data.msg, {
                         position: "top-right",
                         autoClose: 1000,
@@ -79,7 +79,7 @@ function TableCustomer() {
                         draggable: true,
                         progress: undefined,
                         theme: "light",
-                    }).then(()=>{
+                    }).then(() => {
                         window.location.reload('/');
                     })
                 }
@@ -87,22 +87,32 @@ function TableCustomer() {
         }
     }
 
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: urlApi + 'getData',
+            // responseType: 'stream'
+        })
+            .then(function (response) {
+                console.log(response.data);
+            });
+    })
     return (
         <div>
-            <ToastContainer/>
+            <ToastContainer />
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modal User</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <input onChange={e=>setName(e.target.value)} type="text" placeholder='Enter Name User..' className='form-control' />
-                    <input onChange={e=>setEmail(e.target.value)} type="email" placeholder='Enter Email User..' className='form-control mt-2' />
+                    <input onChange={e => setName(e.target.value)} type="text" placeholder='Enter Name User..' className='form-control' />
+                    <input onChange={e => setEmail(e.target.value)} type="email" placeholder='Enter Email User..' className='form-control mt-2' />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" className='bg-gray-700' onClick={handleClose}>
                         Close
                     </Button>
-                    <Button onClick ={addUser} variant="primary" className='bg-blue-400'>
+                    <Button onClick={addUser} variant="primary" className='bg-blue-400'>
                         Save
                     </Button>
                 </Modal.Footer>

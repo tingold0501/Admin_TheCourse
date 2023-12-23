@@ -4,6 +4,12 @@ import { Link } from 'react-router-dom'
 
 function Header() {
     const token = localStorage.getItem('token');
+    const logout = () => {
+        if (localStorage.getItem('token')) {
+            localStorage.removeItem('token');
+            window.location.replace('/');
+        }
+    }
     return (
         <div>
             <nav className="bg-white border-b border-gray-200 fixed z-30 w-full">
@@ -48,17 +54,15 @@ function Header() {
                                 </div>
                             </div>
                             {token ? (
+                                <a onClick={logout} href="#" className="hidden sm:inline-flex ml-5 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center mr-3">
+                                    Log Out
+                                </a>
+                            ) : (
                                 <Link to='/login'>
                                     <a href="#" className="hidden sm:inline-flex ml-5 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center mr-3">
-                                        Log Out
+                                        Log In
                                     </a>
                                 </Link>
-                            ):(
-                                <Link to='/login'>
-                                <a href="#" className="hidden sm:inline-flex ml-5 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center mr-3">
-                                    LogIn
-                                </a>
-                            </Link>
                             )}
                         </div>
                     </div>
