@@ -7,6 +7,7 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 {/* <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
                 <h3 className="text-xl leading-none font-bold text-gray-900 mb-10">Acquisition Overview</h3>
                 <div className="block w-full overflow-x-auto">
@@ -219,10 +220,15 @@ function TableRole() {
             <div className="bg-white shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-bold leading-none text-gray-900">Role Table</h3>
+                    <Link to='/roledashboard'>
+                        <a href="#" className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2">View all</a>
+                    </Link>
                     <Button variant="primary" className='bg-blue-500' onClick={handleShow}>
                         Add Role
                     </Button>
+
                 </div>
+
                 <div className="flow-root">
                     {roles.length > 0 ? (
                         <ul role="list" className="divide-y divide-gray-200">
@@ -242,13 +248,16 @@ function TableRole() {
                                             </p> */}
                                         </div>
                                         <div className="inline-flex items-center text-base font-semibold text-gray-900">
-                                            {item.status}
+                                            <select defaultValue={item.status} className='form-control border-none'>
+                                                <option value={1}> Opening</option>
+                                                <option value={0}> Closing</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </li>
                             ))}
                         </ul>
-                    ):(
+                    ) : (
                         ""
                     )}
                 </div>
