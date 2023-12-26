@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -127,9 +127,12 @@ function TableRole() {
     const handleShow = () => setShow(true);
 
     const urlApi = 'http://127.0.0.1:8000/api/';
-    const [roleName,setRoleName] = useState("");
-    const addRole = ()=>{
-        if(roleName ==""){
+    const [roleName, setRoleName] = useState("");
+    const [roles, setRoles] = useState([]);
+    const [page, setPage] = useState(1);
+    const [pagination, setPagination] = useState([]);
+    const addRole = () => {
+        if (roleName == "") {
             toast.error('🦄 Role Name Null!', {
                 position: "top-right",
                 autoClose: 1000,
@@ -141,16 +144,16 @@ function TableRole() {
                 theme: "light",
             });
         }
-        else{
+        else {
             axios({
                 method: 'post',
                 url: urlApi + 'addRole',
                 data: {
                     roleName: roleName,
                 }
-            }).then((res)=>{
+            }).then((res) => {
                 console.log(res);
-                if(res.data.check == true){
+                if (res.data.check == true) {
                     toast.success('🦄' + res.data.msg, {
                         position: "top-right",
                         autoClose: 1000,
@@ -161,8 +164,11 @@ function TableRole() {
                         progress: undefined,
                         theme: "light",
                     });
+                    setTimeout(() => {
+                        window.location.reload();
+                    })
                 }
-                else if(res.data.msg.roleName){
+                else if (res.data.msg.roleName) {
                     toast.error('🦄' + res.data.msg.roleName, {
                         position: "top-right",
                         autoClose: 1000,
@@ -177,6 +183,20 @@ function TableRole() {
             })
         }
     }
+    useEffect(() => {
+        fetch(urlApi + "getDataRole?page=" + page)
+            .then((res) => res.json())
+            .then((res) => {
+                setRoles(res.data);
+                var arr = [];
+                if (res.last_page > 1) {
+                    for (let i = 1; i < res.last_page + 1; i++) {
+                        arr.push(i);
+                    }
+                    setPagination(arr);
+                }
+            });
+    }, [page]);
     return (
         <div>
             <ToastContainer />
@@ -185,7 +205,7 @@ function TableRole() {
                     <Modal.Title>Modal Role</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <input onChange={e=>setRoleName(e.target.value)} type="text" placeholder='Enter Role Name..' className='form-control' />
+                    <input onChange={e => setRoleName(e.target.value)} type="text" placeholder='Enter Role Name..' className='form-control' />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" className='bg-gray-700' onClick={handleClose}>
@@ -204,26 +224,33 @@ function TableRole() {
                     </Button>
                 </div>
                 <div className="flow-root">
-                    <ul role="list" className="divide-y divide-gray-200">
-                        <li className="py-3 sm:py-4">
-                            <div className="flex items-center space-x-4">
-                                <div className="flex-shrink-0">
-                                    <img className="h-8 w-8 rounded-full" src="https://demo.themesberg.com/windster/images/users/neil-sims.png" alt="Neil image" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-gray-900 truncate">
-                                        Neil Sims
-                                    </p>
-                                    <p className="text-sm text-gray-500 truncate">
-                                        <a href="/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="17727a767e7b57607e7973646372653974787a">[email&nbsp;protected]</a>
-                                    </p>
-                                </div>
-                                <div className="inline-flex items-center text-base font-semibold text-gray-900">
-                                    $320
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                    {roles.length > 0 ? (
+                        <ul role="list" className="divide-y divide-gray-200">
+                            {roles.map((item, index) => (
+                                <li key={index} className="py-3 sm:py-4">
+                                    <div className="flex items-center space-x-4">
+                                        <div className="flex-shrink-0">
+                                            {/* <img className="h-8 w-8 rounded-full" src="https://demo.themesberg.com/windster/images/users/neil-sims.png" alt="Neil image" /> */}
+                                            <p>{++index}</p>
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-sm font-medium text-gray-900 truncate">
+                                                {item.name}
+                                            </p>
+                                            {/* <p className="text-sm text-gray-500 truncate">
+                                                <a href="/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="17727a767e7b57607e7973646372653974787a">[email&nbsp;protected]</a>
+                                            </p> */}
+                                        </div>
+                                        <div className="inline-flex items-center text-base font-semibold text-gray-900">
+                                            {item.status}
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    ):(
+                        ""
+                    )}
                 </div>
             </div>
         </div>

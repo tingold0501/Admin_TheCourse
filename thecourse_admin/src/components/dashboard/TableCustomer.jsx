@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect } from 'react'
 import { useState } from 'react';
@@ -31,6 +32,8 @@ function TableCustomer() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [users, setUsers] = useState([]);
+    const [page, setPage] = useState(1);
+    const [pagination, setPagination] = useState([]);
     // const [idRole, setIdRole] = useState("");
 
     const addUser = () => {
@@ -79,8 +82,9 @@ function TableCustomer() {
                         draggable: true,
                         progress: undefined,
                         theme: "light",
-                    }).then(() => {
-                        window.location.reload('/');
+                    });
+                    setTimeout(()=>{
+                        window.location.reload();
                     })
                 }
             })
@@ -88,15 +92,19 @@ function TableCustomer() {
     }
 
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: urlApi + 'getData',
-            // responseType: 'stream'
-        })
-            .then(function (response) {
-                console.log(response.data);
-            });
-    })
+        fetch(urlApi + "getData?page=" + page)
+          .then((res) => res.json())
+          .then((res) => {
+            setUsers(res.data);
+            var arr = [];
+            if (res.last_page > 1) {
+              for (let i = 1; i < res.last_page + 1; i++) {
+                arr.push(i);
+              }
+              setPagination(arr);
+            }
+          });
+      }, [page]);
     return (
         <div>
             <ToastContainer />
@@ -128,26 +136,34 @@ function TableCustomer() {
                     </Button>
                 </div>
                 <div className="flow-root">
-                    <ul role="list" className="divide-y divide-gray-200">
-                        <li className="py-3 sm:py-4">
-                            <div className="flex items-center space-x-4">
-                                <div className="flex-shrink-0">
-                                    <img className="h-8 w-8 rounded-full" src="https://demo.themesberg.com/windster/images/users/neil-sims.png" alt="Neil image" />
+                    {users.length > 0 ? (
+                        <ul role="list" className="divide-y divide-gray-200">
+                            {users.map((item,index)=>(
+                                <li key={index} className="py-3 sm:py-4">
+                                <div className="flex items-center space-x-4">
+                                    <div className="flex-shrink-0">
+                                        {/* <img className="h-8 w-8 rounded-full" src="https://demo.themesberg.com/windster/images/users/neil-sims.png" alt="Neil image" /> */}
+                                        <p>{++index}</p>
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-medium text-gray-900 truncate">
+                                            {item.name}
+                                        </p>
+                                        <p className="text-sm text-gray-500 truncate">
+                                            <a href="/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="17727a767e7b57607e7973646372653974787a">{item.email}</a>
+                                        </p>
+                                    </div>
+                                    <div className="inline-flex items-center text-base font-semibold text-gray-900">
+                                        {item.idRole}
+                                    </div>
                                 </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-gray-900 truncate">
-                                        Neil Sims
-                                    </p>
-                                    <p className="text-sm text-gray-500 truncate">
-                                        <a href="/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="17727a767e7b57607e7973646372653974787a">[email&nbsp;protected]</a>
-                                    </p>
-                                </div>
-                                <div className="inline-flex items-center text-base font-semibold text-gray-900">
-                                    $320
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
+                            ))}
+                        </ul>
+                    ):(
+                        ""
+                    )}
+
                 </div>
             </div>
         </div>
