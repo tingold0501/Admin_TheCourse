@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function Header() {
@@ -9,7 +9,7 @@ function Header() {
             localStorage.removeItem('token');
             window.location.replace('/');
         }
-    }
+    }  
     return (
         <div>
             <nav className="bg-white border-b border-gray-200 fixed z-30 w-full">
