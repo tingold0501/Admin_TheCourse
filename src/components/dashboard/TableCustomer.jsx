@@ -87,7 +87,7 @@ function TableCustomer() {
                         theme: "light",
                     });
                     setTimeout(() => {
-                        window.location.reload();
+                        // window.location.reload();
                     })
                 }
             })
@@ -113,6 +113,7 @@ function TableCustomer() {
             .then((res) => res.json())
             .then((res) => {
                 setRoles(res.data);
+                console.log(res.data);
                 var arr = [];
                 if (res.last_page > 1) {
                     for (let i = 1; i < res.last_page + 1; i++) {
@@ -132,14 +133,14 @@ function TableCustomer() {
                 <Modal.Body>
                     <input onChange={e => setName(e.target.value)} type="text" placeholder='Enter Name User..' className='form-control' />
                     <input onChange={e => setEmail(e.target.value)} type="email" placeholder='Enter Email User..' className='form-control mt-2' />
-                   
-                        <select defaultValue={roles.forEach} className='form-control '>
-                            {roles.map(item => (
-                                <option key={item.id} value={item.id} onChange={e=>setIdRole(e.target.value)}>
-                                    {item.name}
-                                </option>
-                            ))}
-                        </select>
+
+                    <select defaultValue={idRole} className='mt-2 form-control' onChange={e => setIdRole(e.target.value)}>
+                        {roles.map(item => (
+                            <option key={item.id} value={item.id}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" className='bg-gray-700' onClick={handleClose}>
