@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
 function UserTables() {
@@ -38,6 +39,7 @@ function UserTables() {
                 // }
             });
     });
+  
     return (
         <div>
             <div className="container ml-[15%] ">
@@ -99,7 +101,7 @@ function UserTables() {
                                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <select defaultValue={item.idRole} className='form-control'>
                                                         {rolesTable.map(item => (
-                                                            <option key={item.id} value={item.idRole}>
+                                                            <option key={item.id} value={item.id}>
                                                                 {item.name}
                                                             </option>
                                                         ))}

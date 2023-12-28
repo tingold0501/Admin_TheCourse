@@ -49,6 +49,7 @@ function Header() {
                             </button>
                             <div className="hidden lg:flex items-center">
                                 <span className="text-base font-normal text-gray-500 mr-5">Open source ❤️</span>
+                                
                                 <div className="-mb-1">
                                     {/* <a className="github-button" href="#" data-color-scheme="no-preference: dark; light: light; dark: light;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star themesberg/windster-tailwind-css-dashboard on GitHub">Star</a> */}
                                 </div>

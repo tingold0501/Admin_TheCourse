@@ -4,6 +4,7 @@ import User from "./pages/User"
 import Login from "./pages/Login"
 import DashboardUser from "./pages/DashboardUser"
 import DashboardRole from "./pages/DashboardRole"
+import Education from "./pages/Education"
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/userdashboard" element={<DashboardUser />} />
           <Route path="/roledashboard" element={<DashboardRole />} />
+          <Route path="/educationdashboard" element={<Education />} />
         </Routes>
       </BrowserRouter>
     </>

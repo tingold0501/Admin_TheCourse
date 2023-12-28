@@ -109,81 +109,10 @@ import { Link } from 'react-router-dom';
                 </div>
             </div> */}
 function TableRole() {
-    <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-    />
-    {/* Same as */ }
-    <ToastContainer />
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
     const urlApi = 'http://127.0.0.1:8000/api/';
-    const [roleName, setRoleName] = useState("");
     const [roles, setRoles] = useState([]);
     const [page, setPage] = useState(1);
     const [pagination, setPagination] = useState([]);
-    const addRole = () => {
-        if (roleName == "") {
-            toast.error('🦄 Role Name Null!', {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        }
-        else {
-            axios({
-                method: 'post',
-                url: urlApi + 'addRole',
-                data: {
-                    roleName: roleName,
-                }
-            }).then((res) => {
-                console.log(res);
-                if (res.data.check == true) {
-                    toast.success('🦄' + res.data.msg, {
-                        position: "top-right",
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
-                    setTimeout(() => {
-                        window.location.reload();
-                    })
-                }
-                else if (res.data.msg.roleName) {
-                    toast.error('🦄' + res.data.msg.roleName, {
-                        position: "top-right",
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
-                }
-            })
-        }
-    }
     useEffect(() => {
         fetch(urlApi + "getDataRole?page=" + page)
             .then((res) => res.json())
@@ -201,34 +130,13 @@ function TableRole() {
     return (
         <div>
             <ToastContainer />
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal Role</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <input onChange={e => setRoleName(e.target.value)} type="text" placeholder='Enter Role Name..' className='form-control' />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" className='bg-gray-700' onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button onClick={addRole} variant="primary" className='bg-blue-400'>
-                        Save
-                    </Button>
-                </Modal.Footer>
-            </Modal>
             <div className="bg-white shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-bold leading-none text-gray-900">Role Table</h3>
                     <Link to='/roledashboard'>
                         <a href="#" className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2">View all</a>
                     </Link>
-                    <Button variant="primary" className='bg-blue-500' onClick={handleShow}>
-                        Add Role
-                    </Button>
-
                 </div>
-
                 <div className="flow-root">
                     {roles.length > 0 ? (
                         <ul role="list" className="divide-y divide-gray-200">
