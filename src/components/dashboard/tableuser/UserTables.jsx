@@ -24,20 +24,20 @@ function UserTables() {
             });
     }, [page]);
     useEffect(() => {
-        fetch(urlApi + "getDataRole?page=" + page)
+        fetch(urlApi + "getDataRole")
             .then((res) => res.json())
             .then((res) => {
                 setRolesTable(res.data);
                 console.log(res.data);
-                var arr = [];
-                if (res.last_page > 1) {
-                    for (let i = 1; i < res.last_page + 1; i++) {
-                        arr.push(i);
-                    }
-                    setPagination(arr);
-                }
+                // var arr = [];
+                // if (res.last_page > 1) {
+                //     for (let i = 1; i < res.last_page + 1; i++) {
+                //         arr.push(i);
+                //     }
+                //     setPagination(arr);
+                // }
             });
-    }, [page]);
+    });
     return (
         <div>
             <div className="container ml-[15%] ">
@@ -99,7 +99,7 @@ function UserTables() {
                                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <select defaultValue={item.idRole} className='form-control'>
                                                         {rolesTable.map(item => (
-                                                            <option key={item.id} value={item.id}>
+                                                            <option key={item.id} value={item.idRole}>
                                                                 {item.name}
                                                             </option>
                                                         ))}
